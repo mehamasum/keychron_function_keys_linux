@@ -1,20 +1,24 @@
-# I've purchased an Akko keyboard and will be using that in my Linux environment from now on. I will continue to maintain the repo but should something happen, I'm unlikely to notice. Make sure to submit PRs with descriptions of the issue!
----
-
-# Enable Function Keys On The Keychron K2 Mechanical Keyboard Under Linux
+# Enable Function Keys On The Keychron K2 and K3 Mechanical Keyboard Under Linux
 
 
 Below, you'll find the steps required to create a systemd command that will run at boot to disable the media keys and restore f1-f12 functionality.
 
 ## Step 1
 
-Open a terminal window and enter the following command:
+Open a terminal window and create a new file in the folder \
+_/etc/systemd/system/_.\
+File name should be **keychron.service**
 
-`sudo nano /etc/systemd/system/keychron.service`
+```bash
+sudo nvim /etc/systemd/system/keychron.service
+```
+
+### Note:
+nvim can be exchanged for any editor of your choice for example [doom emacs](https://github.com/hlissner/doom-emacs).
 
 ## Step 2
 
-Paste the following into the window:
+Paste the following code into the window:
 
 ```
 [Unit]
@@ -28,19 +32,23 @@ ExecStart=/bin/bash -c "echo 0 > /sys/module/hid_apple/parameters/fnmode"
 WantedBy=multi-user.target
 ```
 
-Press `ctrl+o` and then `ctrl+x` to exit.
+To exit nvim press `escape` then `:` then `w` `q` and enter.
 
 ## Step 3
 
-In the terminal, type the following:
+In the terminal, in order to enable the service type the following:
 
-`systemctl enable keychron`
+```bash
+sudo systemctl enable keychron
+```
 
 ## Step 4
 
-That's it! A reboot, and you'll see that the function keys have been re-enabled.
-Alternatively, run this command to see the changes right away:
-`systemctl start keychron`
+To see the changes right away run last command:
+
+```bash
+sudo systemctl start keychron
+```
 
 ## Closing Remarks
 
