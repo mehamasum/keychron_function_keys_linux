@@ -22,11 +22,12 @@ Paste the following code into the window:
 
 ```
 [Unit]
-Description=The command to make the Keychron K2 work
+Description=The command to make the Keychron K2-k4 work with Function keys
 
 [Service]
 Type=oneshot
-ExecStart=/bin/bash -c "echo 0 > /sys/module/hid_apple/parameters/fnmode"
+ExecStart=/bin/bash -c "sudo echo 1 | sudo tee /sys/module/hid_apple/parameters/fnmode"
+ExecStop=/bin/bash -c "sudo echo 0 | sudo tee /sys/module/hid_apple/parameters/fnmode"
 
 [Install]
 WantedBy=multi-user.target
