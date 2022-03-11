@@ -3,6 +3,7 @@ Description=The command to make the Keychron K2-k4 work with Function keys
 
 [Service]
 Type=oneshot
+RemainAfterExit=true
 ExecStart=/bin/bash -c "sudo echo 1 | sudo tee /sys/module/hid_apple/parameters/fnmode"
 ExecStop=/bin/bash -c "sudo echo 0 | sudo tee /sys/module/hid_apple/parameters/fnmode"
 

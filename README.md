@@ -10,11 +10,13 @@ _/etc/systemd/system/_.\
 File name should be **keychron.service**
 
 ```bash
-sudo nvim /etc/systemd/system/keychron.service
+sudoedit /etc/systemd/system/keychron.service
 ```
 
 ### Note:
-nvim can be exchanged for any editor of your choice for example [doom emacs](https://github.com/hlissner/doom-emacs).
+
+You can change the default editor to your preffered choice by typing `export
+EDITOR=nano` before running `sudoedit`
 
 ## Step 2
 
@@ -26,6 +28,7 @@ Description=The command to make the Keychron K2-k4 work with Function keys
 
 [Service]
 Type=oneshot
+RemainAfterExit=true
 ExecStart=/bin/bash -c "sudo echo 1 | sudo tee /sys/module/hid_apple/parameters/fnmode"
 ExecStop=/bin/bash -c "sudo echo 0 | sudo tee /sys/module/hid_apple/parameters/fnmode"
 
@@ -51,6 +54,32 @@ To see the changes right away run last command:
 sudo systemctl start keychron
 ```
 
+Alternatively just run:
+
+```bash
+sudo systemctl enable --now keycron
+```
+
 ## Closing Remarks
 
-If you want to simply drag/drop the file that you create manually in the steps provided, I have it under the scripts folder in this repo. Download it and drop it in `/etc/systemd/system/`, doing Step 3 at the end.
+If you want to simply drag/drop the file that you create manually in the steps
+provided, I have it under the scripts folder in this repo. Download it and drop
+it in `/etc/systemd/system/`, doing Step 3 at the end.
+
+### Toubleshooting
+
+If this doesn't work swapping `ExecStart` and `ExecStop` might help.
+
+```
+[Unit]
+Description=The command to make the Keychron K2-k4 work with Function keys
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+ExecStart=/bin/bash -c "sudo echo 0 | sudo tee /sys/module/hid_apple/parameters/fnmode"
+ExecStop=/bin/bash -c "sudo echo 1 | sudo tee /sys/module/hid_apple/parameters/fnmode"
+
+[Install]
+WantedBy=multi-user.target
+```
